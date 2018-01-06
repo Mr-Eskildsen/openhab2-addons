@@ -38,6 +38,7 @@ import org.slf4j.LoggerFactory;
 import name.eskildsen.zoneminder.IZoneMinderConnectionInfo;
 import name.eskildsen.zoneminder.IZoneMinderSession;
 import name.eskildsen.zoneminder.ZoneMinderFactory;
+import name.eskildsen.zoneminder.api.exception.ZoneMinderApiNotEnabledException;
 import name.eskildsen.zoneminder.exception.ZoneMinderUrlNotFoundException;
 
 /**
@@ -165,7 +166,7 @@ public abstract class ZoneMinderBaseThingHandler extends BaseThingHandler implem
     /**
      * Method to Refresh Thing Handler.
      */
-    public final synchronized void refreshThing(IZoneMinderSession session, DataRefreshPriorityEnum refreshPriority) {
+    public final synchronized void refreshThing(DataRefreshPriorityEnum refreshPriority) {
 
         if ((refreshPriority != getRefreshPriority()) && (!isConnected())) {
             return;
@@ -267,6 +268,14 @@ public abstract class ZoneMinderBaseThingHandler extends BaseThingHandler implem
         try {
             zoneMinderSession = ZoneMinderFactory.CreateSession(connection);
 
+        } catch (ZoneMinderApiNotEnabledException e) {
+            // TODO:: ERROR HANDLING
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        } catch (Exception e) {
+            // TODO:: ERROR HANDLING
+            // TODO Auto-generated catch block
+            e.printStackTrace();
         } finally {
             lockSession.unlock();
         }

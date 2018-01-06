@@ -36,11 +36,6 @@
         <option value="https">HTTPS</option>
       </options>
     </parameter>
-    <parameter name="urlpath" type="text" required="false" groupName="basic">
-      <label>Additional path on ZoneMinder Server to access API</label>
-      <description>Additional path on ZoneMinder Server to access API. In a standard installation this is' /zm'</description>
-      <default>/zm</default>
-    </parameter>
     <parameter name="user" type="text" required="false" groupName="credentials">
       <label>Username</label>
       <description>User to access the ZoneMinder Server API</description>
@@ -50,6 +45,20 @@
       <label>Password</label>
       <description>Password to access the ZoneMinder Server API</description>
     </parameter>
+
+    <parameter name="urlpath" type="text" required="false" groupName="advanced">
+      <label>Additional path on ZoneMinder Server to access API</label>
+      <description>Additional path on ZoneMinder Server to access ZoneMinder Portal page. In a standard installation this is' /zm'</description>
+      <default>/zm</default>
+      <advanced>true</advanced>
+    </parameter>
+    <parameter name="apipath" type="text" required="false" groupName="advanced">
+      <label>Path on ZoneMinder Server to access API</label>
+      <description>Additional path on ZoneMinder Server to access API. In a standard installation this is' /zm/api'</description>
+      <default>/zm/api</default>
+      <advanced>true</advanced>
+    </parameter>
+
     <parameter name="http_port" type="integer" required="false" min="0" max="65335" groupName="network">
       <label>Port</label>
       <description>Port of the ZoneMinder Server API. If '0', then the port will be determined from the protocol</description>

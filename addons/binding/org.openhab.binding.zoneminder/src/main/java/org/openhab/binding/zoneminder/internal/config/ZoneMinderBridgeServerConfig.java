@@ -18,13 +18,14 @@ import org.openhab.binding.zoneminder.ZoneMinderConstants;
  */
 public class ZoneMinderBridgeServerConfig extends ZoneMinderConfig {
 
-    private String hostname;
+    private String hostname = "";
     private Integer http_port;
     private Integer telnet_port;
 
     private String protocol;
 
     private String urlpath;
+    private String apipath;
 
     private String user;
     private String password;
@@ -82,6 +83,14 @@ public class ZoneMinderBridgeServerConfig extends ZoneMinderConfig {
 
     public void setServerBasePath(String urlpath) {
         this.urlpath = urlpath;
+    }
+
+    public String getServerApiPath() {
+        return apipath;
+    }
+
+    public void setServerApiPath(String apiPath) {
+        this.apipath = apiPath;
     }
 
     public String getUserName() {

@@ -48,6 +48,7 @@ import name.eskildsen.zoneminder.IZoneMinderMonitorData;
 import name.eskildsen.zoneminder.IZoneMinderSession;
 import name.eskildsen.zoneminder.ZoneMinderFactory;
 import name.eskildsen.zoneminder.api.event.ZoneMinderEvent;
+import name.eskildsen.zoneminder.api.exception.ZoneMinderApiNotEnabledException;
 import name.eskildsen.zoneminder.api.telnet.ZoneMinderTriggerEvent;
 import name.eskildsen.zoneminder.common.ZoneMinderMonitorFunctionEnum;
 import name.eskildsen.zoneminder.common.ZoneMinderMonitorStatusEnum;
@@ -498,6 +499,10 @@ public class ZoneMinderThingMonitorHandler extends ZoneMinderBaseThingHandler im
 
                 updateThingStatus(newThingStatus, thingStatusDetailed, thingStatusDescription);
                 return;
+            } catch (ZoneMinderApiNotEnabledException e) {
+                // TODO:: Error Handling
+                // TODO Auto-generated catch block
+                e.printStackTrace();
             }
 
             if (curSession != null) {
