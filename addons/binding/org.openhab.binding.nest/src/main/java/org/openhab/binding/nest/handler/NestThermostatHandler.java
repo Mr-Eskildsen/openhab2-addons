@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -51,12 +51,16 @@ public class NestThermostatHandler extends NestBaseHandler<Thermostat> {
                 return getAsOnOffType(thermostat.isFanTimerActive());
             case CHANNEL_FAN_TIMER_DURATION:
                 return new DecimalType(thermostat.getFanTimerDuration());
+            case CHANNEL_FAN_TIMER_TIMEOUT:
+                return getAsDateTimeTypeOrNull(thermostat.getFanTimerTimeout());
             case CHANNEL_HAS_FAN:
                 return getAsOnOffType(thermostat.isHasFan());
             case CHANNEL_HAS_LEAF:
                 return getAsOnOffType(thermostat.isHasLeaf());
             case CHANNEL_HUMIDITY:
                 return new DecimalType(thermostat.getHumidity());
+            case CHANNEL_LAST_CONNECTION:
+                return getAsDateTimeTypeOrNull(thermostat.getLastConnection());
             case CHANNEL_LOCKED:
                 return getAsOnOffType(thermostat.isLocked());
             case CHANNEL_LOCKED_MAX_SET_POINT:
@@ -73,6 +77,8 @@ public class NestThermostatHandler extends NestBaseHandler<Thermostat> {
                 Mode previousMode = thermostat.getPreviousMode() != null ? thermostat.getPreviousMode()
                         : thermostat.getMode();
                 return new StringType(previousMode.name());
+            case CHANNEL_STATE:
+                return new StringType(thermostat.getState().name());
             case CHANNEL_SET_POINT:
                 return new DecimalType(thermostat.getTargetTemperature());
             case CHANNEL_SUNLIGHT_CORRECTION_ACTIVE:

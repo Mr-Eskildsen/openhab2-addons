@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -32,8 +32,7 @@ import org.slf4j.LoggerFactory;
  * @author Pauli Anttila - Initial contribution
  */
 public class SamsungTvDiscoveryParticipant implements UpnpDiscoveryParticipant {
-
-    private Logger logger = LoggerFactory.getLogger(SamsungTvDiscoveryParticipant.class);
+    private final Logger logger = LoggerFactory.getLogger(SamsungTvDiscoveryParticipant.class);
 
     @Override
     public Set<ThingTypeUID> getSupportedThingTypeUIDs() {
@@ -44,16 +43,12 @@ public class SamsungTvDiscoveryParticipant implements UpnpDiscoveryParticipant {
     public DiscoveryResult createResult(RemoteDevice device) {
         ThingUID uid = getThingUID(device);
         if (uid != null) {
-            Map<String, Object> properties = new HashMap<>(3);
-            String label = "Samsung TV";
-            try {
-                label = device.getDetails().getFriendlyName();
-            } catch (Exception e) {
-                // ignore and use the default label
-            }
+            Map<String, Object> properties = new HashMap<>();
             properties.put(HOST_NAME, device.getIdentity().getDescriptorURL().getHost());
 
-            DiscoveryResult result = DiscoveryResultBuilder.create(uid).withProperties(properties).withLabel(label)
+            DiscoveryResult result = DiscoveryResultBuilder.create(uid)
+                    .withProperties(properties)
+                    .withLabel(getLabel(device))
                     .build();
 
             logger.debug("Created a DiscoveryResult for device '{}' with UDN '{}'",
@@ -65,13 +60,23 @@ public class SamsungTvDiscoveryParticipant implements UpnpDiscoveryParticipant {
         }
     }
 
+    private String getLabel(RemoteDevice device) {
+        String label = "Samsung TV";
+        try {
+            label = device.getDetails().getFriendlyName();
+        } catch (Exception e) {
+            // ignore and use the default label
+        }
+        return label;
+    }
+
     @Override
     public ThingUID getThingUID(RemoteDevice device) {
         if (device != null) {
 
             String manufacturer = device.getDetails().getManufacturerDetails().getManufacturer();
             String modelName = device.getDetails().getModelDetails().getModelName();
-            String friedlyName = device.getDetails().getFriendlyName();
+            String friendlyName = device.getDetails().getFriendlyName();
 
             if (manufacturer != null && modelName != null) {
 
@@ -85,8 +90,7 @@ public class SamsungTvDiscoveryParticipant implements UpnpDiscoveryParticipant {
                     // device and ignore rest of the UPnP devices.
 
                     if (device.getType().getType().equals("MediaRenderer")) {
-
-                        logger.debug("Discovered a Samsung TV '{}' model '{}' thing with UDN '{}'", friedlyName,
+                        logger.debug("Discovered a Samsung TV '{}' model '{}' thing with UDN '{}'", friendlyName,
                                 modelName, udn);
 
                         return new ThingUID(SAMSUNG_TV_THING_TYPE, udn);

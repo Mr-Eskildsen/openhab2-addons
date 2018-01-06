@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -183,14 +183,18 @@ public class Thermostat extends BaseNestDevice {
         fanTimerDuration = duration;
     }
 
+    public Integer getTimeToTarget() {
+        return parseTimeToTarget(timeToTarget);
+    }
+
     /*
      * Turns the time to target string into a real value.
      */
-    public Integer getTimeToTarget() {
-        if (timeToTarget.startsWith("~")) {
-            timeToTarget = timeToTarget.substring(1);
+    static Integer parseTimeToTarget(String timeToTarget) {
+        if (timeToTarget.startsWith("~") || timeToTarget.startsWith("<") || timeToTarget.startsWith(">")) {
+            return Integer.valueOf(timeToTarget.substring(1));
         }
-        return Integer.parseInt(timeToTarget);
+        return Integer.valueOf(timeToTarget);
     }
 
     public String getWhereName() {

@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -788,7 +788,12 @@ public class TeslaHandler extends BaseThingHandler {
                 return ThingStatusDetail.NONE;
 
             } else if (response.getStatus() == 401) {
-                return ThingStatusDetail.CONFIGURATION_ERROR;
+                if (!StringUtils.isEmpty(username)) {
+                    String password = (String) getConfig().get(PASSWORD);
+                    return authenticate(username, password);
+                } else {
+                    return ThingStatusDetail.CONFIGURATION_ERROR;
+                }
             } else if (response.getStatus() == 503 || response.getStatus() == 502) {
                 return ThingStatusDetail.COMMUNICATION_ERROR;
             }

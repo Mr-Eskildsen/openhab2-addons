@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -105,6 +105,21 @@ public class GsonParsingTest {
         assertEquals(Integer.valueOf(0), thermostat.getTimeToTarget());
         assertEquals("z8fK075vJJPPWnXxLx1m3GskRSZQ64iQydB59k-UPsKQrCrjN0yXiw", thermostat.getWhereId());
         assertEquals("Living Room", thermostat.getWhereName());
+    }
+
+    @Test
+    public void thermostatTimeToTargetSupportedValueParsing() {
+        assertEquals((Integer) 0, Thermostat.parseTimeToTarget("~0"));
+        assertEquals((Integer) 5, Thermostat.parseTimeToTarget("<5"));
+        assertEquals((Integer) 10, Thermostat.parseTimeToTarget("<10"));
+        assertEquals((Integer) 15, Thermostat.parseTimeToTarget("~15"));
+        assertEquals((Integer) 90, Thermostat.parseTimeToTarget("~90"));
+        assertEquals((Integer) 120, Thermostat.parseTimeToTarget(">120"));
+    }
+
+    @Test(expected = NumberFormatException.class)
+    public void thermostatTimeToTargetUnsupportedValueParsing() {
+        Thermostat.parseTimeToTarget("#5");
     }
 
     @Test

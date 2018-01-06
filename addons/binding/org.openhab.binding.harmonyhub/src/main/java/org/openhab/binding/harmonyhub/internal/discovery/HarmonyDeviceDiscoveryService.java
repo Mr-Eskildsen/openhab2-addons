@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -75,17 +75,20 @@ public class HarmonyDeviceDiscoveryService extends AbstractDiscoveryService impl
      * Discovers devices connected to a hub
      */
     private void discoverDevices() {
-        if (bridge.getClient() == null) {
-            logger.debug("Harmony client not connected, scanning postponed.");
+        if (bridge.getThing().getStatus() != ThingStatus.ONLINE) {
+            logger.debug("Harmony Hub not online, scanning postponed");
             return;
         }
         logger.debug("getting devices on {}", bridge.getThing().getUID().getId());
-        HarmonyConfig config = null;
-
-        try {
-            config = bridge.getCachedConfig();
-        } catch (Exception e) {
+        bridge.getConfigFuture().thenAccept(this::addDiscoveryResults).exceptionally(e -> {
             logger.debug("Could not get harmony config for discovery, skipping");
+            return null;
+        });
+    }
+
+    private void addDiscoveryResults(HarmonyConfig config) {
+        if (config == null) {
+            logger.debug("addDiscoveryResults: skipping null config");
             return;
         }
 

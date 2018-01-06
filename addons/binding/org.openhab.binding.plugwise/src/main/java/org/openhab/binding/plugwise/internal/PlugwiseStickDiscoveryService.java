@@ -1,5 +1,5 @@
 /**
- * Copyright (c) 2010-2017 by the respective copyright holders.
+ * Copyright (c) 2010-2018 by the respective copyright holders.
  *
  * All rights reserved. This program and the accompanying materials
  * are made available under the terms of the Eclipse Public License v1.0
@@ -212,7 +212,10 @@ public class PlugwiseStickDiscoveryService extends AbstractDiscoveryService
 
     private boolean isAlreadyDiscovered(MACAddress macAddress) {
         ThingUID thingUID = new ThingUID(THING_TYPE_STICK, macAddress.toString());
-        if (discoveryServiceCallback.getExistingDiscoveryResult(thingUID) != null) {
+        if (discoveryServiceCallback == null) {
+            logger.debug("Assuming Stick ({}) has not yet been discovered (callback null)", macAddress);
+            return false;
+        } else if (discoveryServiceCallback.getExistingDiscoveryResult(thingUID) != null) {
             logger.debug("Stick ({}) has existing discovery result: {}", macAddress, thingUID);
             return true;
         } else if (discoveryServiceCallback.getExistingThing(thingUID) != null) {
